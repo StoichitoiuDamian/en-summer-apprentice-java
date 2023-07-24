@@ -9,10 +9,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Java2023demoApplication {
 
 	public static void main(String[] args) {
-
 		ConfigurableApplicationContext context = SpringApplication.run(Java2023demoApplication.class, args);
-
-
 	}
-
 }

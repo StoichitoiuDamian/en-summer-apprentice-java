@@ -1,7 +1,7 @@
 package com.practicaEndava.java2023demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +23,8 @@ public class Venue implements Serializable {
     private int venueCapacity;
 
     @OneToMany(mappedBy = "venue")
-    private List<Event1> events;
+    @JsonIgnore
+    private List<Event> events;
 
 
     public Long getVenueID() {
@@ -58,11 +59,11 @@ public class Venue implements Serializable {
         this.venueCapacity = venueCapacity;
     }
 
-    public List<Event1> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event1> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }

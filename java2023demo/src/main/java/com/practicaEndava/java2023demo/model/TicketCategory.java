@@ -1,5 +1,6 @@
 package com.practicaEndava.java2023demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -14,7 +15,8 @@ public class TicketCategory implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "eventID")
-    private Event1 event;
+    @JsonIgnore
+    private Event event;
 
     @Column(name = "descriptionTicketCategory")
     private String descriptionTicketCategory;
@@ -30,11 +32,11 @@ public class TicketCategory implements Serializable {
         this.ticketCategoryID = ticketCategoryID;
     }
 
-    public Event1 getEventID() {
+    public Event getEventID() {
         return event;
     }
 
-    public void setEventID(Event1 eventID) {
+    public void setEventID(Event eventID) {
         this.event = eventID;
     }
 

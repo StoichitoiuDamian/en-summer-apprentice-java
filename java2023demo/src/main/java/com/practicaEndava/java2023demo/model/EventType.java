@@ -1,5 +1,6 @@
 package com.practicaEndava.java2023demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -17,7 +18,8 @@ public class EventType implements Serializable {
     private String eventTypeName;
 
     @OneToMany(mappedBy = "eventTypeID")
-    private List<Event1> events;
+    @JsonIgnore
+    private List<Event> events;
 
     public Long getEventTypeID() {
         return eventTypeID;
@@ -35,11 +37,11 @@ public class EventType implements Serializable {
         this.eventTypeName = eventTypeName;
     }
 
-    public List<Event1> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event1> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }

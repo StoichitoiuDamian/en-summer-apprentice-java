@@ -10,7 +10,7 @@ public class main {
 
         try{
             try(Connection connection = DriverManager.getConnection(connectionString)){
-                System.out.println("connection failed");
+                System.out.println("connection succes");
             }
         }catch (Exception e){
             e.printStackTrace();
