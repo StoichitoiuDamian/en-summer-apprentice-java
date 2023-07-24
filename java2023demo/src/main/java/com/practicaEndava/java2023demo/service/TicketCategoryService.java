@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketCategoryService {
@@ -20,6 +19,10 @@ public class TicketCategoryService {
 
     public TicketCategory createTicketCategory(TicketCategory ticketCategory){
         return ticketCategoryRepository.save(ticketCategory);
+    }
+
+    public TicketCategory findTicketById(Long id){
+        return ticketCategoryRepository.findTicketCategoryByticketCategoryID(id);
     }
 
 }

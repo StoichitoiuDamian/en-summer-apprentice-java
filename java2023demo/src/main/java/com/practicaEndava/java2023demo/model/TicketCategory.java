@@ -55,4 +55,14 @@ public class TicketCategory implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "TicketCategory{" +
+                "ticketCategoryID=" + ticketCategoryID +
+                ", event=" + event +
+                ", descriptionTicketCategory='" + descriptionTicketCategory + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -1,25 +1,33 @@
 package com.practicaEndava.java2023demo.service;
 
 import com.practicaEndava.java2023demo.DTO.OrderDTO;
-import com.practicaEndava.java2023demo.model.Event;
 import com.practicaEndava.java2023demo.model.Order;
 import com.practicaEndava.java2023demo.model.TicketCategory;
 import com.practicaEndava.java2023demo.model.User;
 import com.practicaEndava.java2023demo.repository.OrderRepository;
 import com.practicaEndava.java2023demo.repository.TicketCategoryRepository;
+import com.practicaEndava.java2023demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
-@Autowired
+
+
     private OrderRepository orderRepository;
     private TicketCategoryRepository ticketCategoryRepository;
+
+    private UserRepository userRepository;
+    @Autowired
+    public OrderService(OrderRepository orderRepository, UserRepository userRepository, TicketCategoryRepository ticketCategory){
+        this.orderRepository=orderRepository;
+        this.userRepository=userRepository;
+        this.ticketCategoryRepository=ticketCategory;
+
+    }
+
     public List<Order> orderFindAll(){
         return orderRepository.findAll();
     }
@@ -36,17 +44,20 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Order createOrderForDTO(Order order) {
+    public void saveOrderFormClient(OrderDTO orderDTO,Long customerId) {
 
-        order.setOrderedAT(new Date());
+        Order order1=new Order();
+        TicketCategory ticketCategoryOrdered=ticketCategoryRepository.findTicketCategoryByticketCategoryID(orderDTO.getTicketCategory());
 
-        TicketCategory ticketCategory = ticketCategoryRepository.findById(order.getTicketCategoryID().getTicketCategoryID()).orElse(null);
-        if (ticketCategory != null) {
-            double totalPrice = ticketCategory.getPrice() * order.getNumberOfTickets();
-            order.setTotalPrice(totalPrice);
-        }
+        User user=userRepository.findByuserID(customerId);
+        order1.setUser(user);
+        order1.setTicketCategoryID(ticketCategoryOrdered);
+        order1.setNumberOfTickets(orderDTO.getNumberOfTickets());
+        order1.setTotalPrice(orderDTO.getTotalPrice());
+        order1.setOrderedAT(orderDTO.getOrderedAT());
 
-        return orderRepository.save(order);
+        orderRepository.save(order1);
+
     }
     public Order createOrderForCustomerDTO(Long customerId, Order order) {
         // Setăm utilizatorul pentru comandă
