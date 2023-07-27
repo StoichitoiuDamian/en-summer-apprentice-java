@@ -4,17 +4,30 @@ import com.practicaEndava.java2023demo.DTO.OrderDTO;
 import com.practicaEndava.java2023demo.model.Order;
 import com.practicaEndava.java2023demo.model.TicketCategory;
 import com.practicaEndava.java2023demo.service.OrderService;
+import com.practicaEndava.java2023demo.service.TicketCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 public class OrderController {
-    @Autowired
+
     private OrderService orderService;
+
+    private TicketCategoryService ticketCategoryService;
+
+    @Autowired
+    public OrderController(OrderService orderService, TicketCategoryService service) {
+        this.orderService = orderService;
+        this.ticketCategoryService= service;
+    }
+
+
+
     @GetMapping("/showAllOrders")
     public List<Order> showAllOrders(){
         return orderService.orderFindAll();
@@ -43,20 +56,23 @@ public class OrderController {
         return orderService.getOrdersByCustomerId(userID);
     }
     @PostMapping("/orders/{customerId}")
-    public OrderDTO createOrderForCustomer(@PathVariable("customerId") Long customerId, @RequestBody OrderDTO orderDTO) {
-        Order order = new Order();
+    public OrderDTO createOrderForCustomer(@PathVariable Long customerId, @RequestBody OrderDTO orderDTO) {
+        TicketCategory ticketCategory=ticketCategoryService.findTicketById(orderDTO.getTicketCategory());
+        System.out.println(orderDTO.getTicketCategory());
 
+         double totalPrice=ticketCategory.getPrice()*orderDTO.getNumberOfTickets();
 
-        order.setOrderID(orderDTO.getOrderID());
-        order.setNumberOfTickets(orderDTO.getNumberOfTickets());
+        Date orderedAT=new Date();
+        OrderDTO orderDTO1=new OrderDTO();
 
-        TicketCategory ticketCategory = new TicketCategory();
-        ticketCategory.setTicketCategoryID(orderDTO.getTicketCategory());
-        order.setTicketCategoryID(ticketCategory);
+        orderDTO1.setOrderID(orderDTO.getOrderID());
+        orderDTO1.setTicketCategory(orderDTO.getTicketCategory());
+        orderDTO1.setOrderedAT(orderedAT);
+        orderDTO1.setNumberOfTickets(orderDTO.getNumberOfTickets());
+        orderDTO1.setTotalPrice(totalPrice);
+        orderService.saveOrderFormClient(orderDTO,customerId);
 
-        Order savedOrder = orderService.createOrderForCustomer(customerId, order);
-
-        return convertToDtoPost(savedOrder);
+        return orderDTO1;
     }
 
 

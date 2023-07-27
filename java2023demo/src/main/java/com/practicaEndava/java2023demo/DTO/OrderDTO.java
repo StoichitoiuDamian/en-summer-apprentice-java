@@ -8,6 +8,7 @@ public class OrderDTO {
     private Date orderedAT;
 
     private  Long ticketCategory;
+
     private  int numberOfTickets;
     private double totalPrice;
 
@@ -17,6 +18,8 @@ public class OrderDTO {
         this.ticketCategory = ticketCategory;
         this.numberOfTickets = numberOfTickets;
     }
+
+
 
     public OrderDTO(Long orderID, Date orderedAT, Long ticketCategory, int numberOfTickets, double totalPrice) {
         this.orderID = orderID;
